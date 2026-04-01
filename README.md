@@ -2,6 +2,15 @@
 
 Shorin Niri，基于Niri和waybar的桌面预设，开箱即用。
 
+## Preview 预览图
+
+![](pics/pic1.png)
+
+![](pics/gif1.gif)
+
+![](pics/gif2.gif)
+
+
 ## Usage 使用方法
 
 - Install 安装
@@ -35,13 +44,6 @@ Shorin Niri，基于Niri和waybar的桌面预设，开箱即用。
     ```
 
 
-## Preview 预览图
-
-    ![](pics/pic1.png)
-
-    ![](pics/gif1.gif)
-
-    ![](pics/gif2.gif)
 
 ## Docs 文档
 
