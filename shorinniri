@@ -29,6 +29,7 @@ step() { echo -e "\n${C_CYA}>>> $1${C_DEF}"; }
 # 2. 全局变量与配置
 # ==========================================
 TEMPLATE_DIR="/usr/share/shorin-niri"
+WALLPAPER_SRC_DIR="/usr/share/shorin-niri-wallpapers" # 新增壁纸来源目录
 BASE_BACKUP_DIR="$HOME/.cache/shorin-niri-backup"
 BACKUP_DIR="$BASE_BACKUP_DIR/$(date +%Y%m%d_%H%M%S)"
 
@@ -62,7 +63,6 @@ UPDATE_IGNORE=(
     ".cache/matugen/hypr/colors.conf"
     ".cache/matugen_vscode_inject.json"
     ".config/obs-studio/themes/matugen.obt"
-    
 )
 
 # 动态合成最终的黑名单
@@ -351,6 +351,17 @@ apply_user_configs() {
     fi
     
     run_hide_desktop_file
+
+    # ==========================================
+    # [新增] 部署默认壁纸，用于初始化 Matugen
+    # ==========================================
+    if [[ -d "$WALLPAPER_SRC_DIR" ]]; then
+        info "$(_t "Deploying default wallpapers..." "正在部署默认壁纸...")"
+        local wp_dest="$HOME/Pictures/Wallpapers"
+        mkdir -p "$wp_dest" 2>/dev/null
+        # 复制壁纸并赋予正确权限 (即使存在也会覆盖同名模板)
+        cp -an "$WALLPAPER_SRC_DIR"/* "$wp_dest/" 2>/dev/null
+    fi
     
     info "$(_t "Installing specific scripts & tools..." "正在安装特色脚本与占位文件...")"
     shorin link >/dev/null 2>&1
@@ -416,25 +427,4 @@ remove_dotfiles() {
     ok "$(_t "Cleanup complete! Removed $removed_count files." "清理完成！共精准移除了 $removed_count 个核心配置文件。")"
 }
 
-# ==========================================
-# 4. 路由入口
-# ==========================================
-case "$1" in
-    init) sync_dotfiles "init"; setup_system_environment; apply_user_configs ;;
-    update) sync_dotfiles "update" ;;
-    remove) remove_dotfiles ;;
-    protect) manage_protection "add" "$2" ;;
-    unprotect) manage_protection "remove" "$2" ;;
-    protected-list) manage_protection "list" ;;
-    hide-icons) run_hide_desktop_file ;;
-    *)
-        echo -e "${C_BLU}Usage:${C_DEF} shorinniri {init|update|remove|protect|unprotect|protected-list|hide-icons}"
-        echo -e "  ${C_GRN}init${C_DEF}           - $(_t "First-time setup" "首次安装时运行 (环境初始化)")"
-        echo -e "  ${C_YEL}update${C_DEF}         - $(_t "Routine update" "日常更新使用 (同步最新配置)")"
-        echo -e "  ${C_RED}remove${C_DEF}         - $(_t "Uninstall/Cleanup" "卸载/清理 (精准移除管理配置)")"
-        echo -e "  ${C_CYA}protect <path>${C_DEF} - $(_t "Protect a config from updates" "保护指定的文件/目录不被更新覆盖")"
-        echo -e "  ${C_CYA}unprotect <path>${C_DEF} - $(_t "Remove protection" "取消对指定文件/目录的保护")"
-        echo -e "  ${C_CYA}protected-list${C_DEF} - $(_t "Show all protected paths" "查看当前所有受保护的路径")"
-        exit 1
-    ;;
-esac
+# =============
