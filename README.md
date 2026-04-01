@@ -1,8 +1,6 @@
 # shorin-niri
 
-Shorin Niri DE, best for chinese user, working out of the box.
-
-Shorin Niri桌面环境，开箱即用。
+Shorin Niri，基于Niri和waybar的桌面预设，开箱即用。
 
 ## Usage 使用方法
 
