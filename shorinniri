@@ -374,10 +374,11 @@ apply_user_configs() {
         cp "$HOME/.config/niri/output-example.kdl" "$HOME/.config/niri/output.kdl"
     fi
 
-    local doc_src="/usr/share/doc/shorin-niri/必看-shoirn-Niri使用方法.txt"
+    local doc_src="/usr/share/doc/shorin-niri/README-Niri.txt"
     if [[ -f "$doc_src" ]]; then
-        info "$(_t "Copying tutorial file..." "正在复制教程文件到桌面...")"
-        cp -n "$doc_src" "$HOME/" 2>/dev/null || true
+        info "$(_t "Copying tutorial file..." "正在复制教程文件到家目录...")"
+        # 复制出来的同时，赋予它中文名字
+        cp -n "$doc_src" "$HOME/必看-shoirn-Niri使用方法.txt" 2>/dev/null || true
     fi
     
     ok "$(_t "Environment initialization complete!" "环境初始化全部完成！")"
