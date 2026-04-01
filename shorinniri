@@ -372,6 +372,12 @@ apply_user_configs() {
     if [[ ! -f "$HOME/.config/niri/output.kdl" && -f "$HOME/.config/niri/output-example.kdl" ]]; then
         cp "$HOME/.config/niri/output-example.kdl" "$HOME/.config/niri/output.kdl"
     fi
+
+    local doc_src="/usr/share/doc/shorin-niri/必看-shoirn-Niri使用方法.txt"
+    if [[ -f "$doc_src" ]]; then
+        info "$(_t "Copying tutorial file..." "正在复制教程文件到桌面...")"
+        cp -n "$doc_src" "$HOME/" 2>/dev/null || true
+    fi
     
     ok "$(_t "Environment initialization complete!" "环境初始化全部完成！")"
 }
@@ -421,6 +427,8 @@ remove_dotfiles() {
         sudo rmdir "/etc/firefox/policies" 2>/dev/null
         sudo rmdir "/etc/firefox" 2>/dev/null
     fi
+
+    rm -f "$HOME/必看-shoirn-Niri使用方法.txt" 2>/dev/null
     
     cleanup_old_backups
     ok "$(_t "Cleanup complete! Removed $removed_count files." "清理完成！共精准移除了 $removed_count 个核心配置文件。")"
