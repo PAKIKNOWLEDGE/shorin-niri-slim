@@ -8,17 +8,21 @@ Preset of Niri, best for chinese user, working out of the box.
     yay -S shorin-niri-git
     ```
 
+    deploy dotfiles:  
+    
     ```
     shorinniri init
     ```
 
-    if you want to remove 
+    then open niri session with `niri-session` or use your prefered display manager
+
+    if you want to remove:
 
     ```
     shorinniri remove 
     ```
 
-    and if you want to install again
+    and if you want to install it again :
 
     ```
     shorinniri init 
