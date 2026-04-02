@@ -1,6 +1,6 @@
 # shorin-niri
 
-Shorin Niri，基于Niri和waybar的桌面预设，开箱即用。
+Shorin Niri，基于Niri和waybar的桌面预设。
 
 ## Preview 预览图
 
