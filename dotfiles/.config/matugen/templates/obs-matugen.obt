@@ -654,6 +654,7 @@ QListView::item:selected,
 QListWidget::item:selected {
     background-color: var(--primary);
     border-color: var(--primary_light);
+    color: var(--black2); /* 新增：让选中时的文字变成深黑色 */
 }
 
 QMenu::item:hover,
@@ -677,7 +678,7 @@ QListView::item:selected:hover,
 QListWidget::item:selected:hover {
     background: var(--primary_light);
     border: 1px solid var(--primary_lighter);
-    color: var(--text);
+    color: var(--black2); /* 修改：把原来的 var(--text) 改为深色 */
 }
 
 QListView::item:disabled,
@@ -1714,37 +1715,42 @@ OBSBasicSettings {
 QCheckBox::indicator,
 QGroupBox::indicator,
 QTableView::indicator {
-    width: var(--icon_base);
-    height: var(--icon_base);
+    width: 16px;
+    height: 16px;
     margin-right: var(--spacing_large);
+    background-color: var(--input_bg);
+    border: 1px solid var(--input_border);
+    border-radius: var(--border_radius_small);
 }
 
 QGroupBox::indicator {
     margin-left: 2px;
 }
 
-QCheckBox::indicator:unchecked,
-QGroupBox::indicator:unchecked,
-
-
-QCheckBox::indicator:unchecked:hover,
-QGroupBox::indicator:unchecked:hover,
-
+QCheckBox::indicator:hover,
+QGroupBox::indicator:hover {
+    background-color: var(--input_bg_hover);
+    border-color: var(--input_border_hover);
+}
 
 QCheckBox::indicator:checked,
-QGroupBox::indicator:checked,
-
+QGroupBox::indicator:checked {
+    background-color: var(--primary);
+    border-color: var(--primary_light);
+    image: url(theme:Dark/check.svg); /* 使用 OBS 自带的勾选图标 */
+}
 
 QCheckBox::indicator:checked:hover,
-QGroupBox::indicator:checked:hover,
+QGroupBox::indicator:checked:hover {
+    background-color: var(--primary_light);
+    border-color: var(--primary_lighter);
+}
 
-
-QCheckBox::indicator:checked:disabled,
-QGroupBox::indicator:checked:disabled,
-
-
-QCheckBox::indicator:unchecked:disabled,
-QGroupBox::indicator:unchecked:disabled,
+QCheckBox::indicator:disabled,
+QGroupBox::indicator:disabled {
+    background-color: var(--button_bg_disabled);
+    border-color: transparent;
+}
 
 
 /* Icon Checkboxes */
@@ -1762,6 +1768,16 @@ QGroupBox::indicator:unchecked:disabled,
 .checkbox-icon::indicator {
     width: var(--icon_base);
     height: var(--icon_base);
+    /* 强制清除全局复选框的背景和边框 */
+    background-color: transparent;
+    border: none; 
+}
+
+.checkbox-icon::indicator:checked,
+.checkbox-icon::indicator:unchecked,
+.checkbox-icon::indicator:hover {
+    background-color: transparent;
+    border: none;
 }
 
 .checkbox-icon:hover,
@@ -2377,16 +2393,27 @@ idian--Row > idian--CheckBox::indicator:hover {
     border-color: var(--grey1);
 }
 
-idian--Row.hover > idian--CheckBox.row-buddy::indicator:unchecked,
+idian--Row idian--CheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    background-color: var(--input_bg);
+    border: 1px solid var(--input_border);
+    border-radius: var(--border_radius_small);
+}
 
+idian--Row idian--CheckBox::indicator:hover,
+idian--Row.hover > idian--CheckBox.row-buddy::indicator {
+    border-color: var(--primary_lighter);
+    background-color: var(--input_bg_hover);
+}
 
-idian--Row idian--CheckBox.keyFocus::indicator,
+idian--Row idian--CheckBox::indicator:checked {
+    background-color: var(--primary);
+    border-color: var(--primary_light);
+    image: url(theme:Dark/check.svg);
+}
 
-
-idian--Row idian--CheckBox.keyFocus::indicator,
-idian--Row idian--CheckBox.keyFocus::indicator:unchecked,
-idian--Row idian--CheckBox.keyFocus::indicator:hover,
-idian--Row idian--CheckBox.keyFocus::indicator:unchecked:hover {
+idian--Row idian--CheckBox.keyFocus::indicator {
     border-color: var(--highlight_color);
 }
 
