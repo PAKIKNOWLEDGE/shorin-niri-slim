@@ -40,7 +40,7 @@ f4可以打开菜单。如果出现卡A的情况可以试试按右shift解决。
 
 【实用命令】
 pac 安装软件 (安装软件还可以用bazaar，这是flatpak软件商城)
-pacr 卸载软件
+pacr 卸载软件（因为暂时没拆分aur依赖，所以想删除桌面依赖的软件要用-Rdd无视依赖关系删除，可能会有风险，谨慎使用。）
 mirror-update 更新镜像源
 sysup 更新系统
 clean 系统清理
@@ -62,7 +62,7 @@ fastfetch：系统信息显示工具
 更多软件信息可以看一键配置脚本的文档。
 
 【如果不想要了或者安装失败了可以回档】
-/usr/local/bin下有两个脚本可以用来回档到运行脚本之前的状态。
+如果你是用我的shorin-arch-setup脚本安装的，/usr/local/bin下有两个脚本可以用来回档到运行脚本之前的状态。
 回到安装桌面前：shorin-de-undochange
 回到运行脚本前：shorin-undochange
 
