@@ -115,15 +115,21 @@ manage_protection() {
     
     local abs_path
     abs_path="$(realpath -m "$target")"
-    local rel_path="${abs_path#$HOME/}"
     
-    if [[ "$abs_path" == "$rel_path" ]]; then
+    # [修复1]：更严谨地清理 HOME 变量末尾可能存在的斜杠
+    local clean_home="${HOME%/}"
+    
+    # [修复2]：更改判断逻辑，确保传入的是家目录下的路径，避免截取失败
+    if [[ "$abs_path" != "$clean_home/"* ]]; then
         err "$(_t "Path must be inside your home directory." "目标路径必须在您的家目录内。")"
         return
     fi
     
+    local rel_path="${abs_path#$clean_home/}"
+    
     if [[ "$action" == "add" ]]; then
-        if [[ ! -e "$TEMPLATE_DIR/$rel_path" ]]; then return; fi
+        # [修复3]：移除了 if [[ ! -e "$TEMPLATE_DIR/$rel_path" ]]; then return; fi
+        # 允许用户直接添加模板中尚未存在（或属于自己专属）的配置路径
         
         if grep -Fxq "$rel_path" "$USER_IGNORE_FILE" 2>/dev/null; then
             info "$(_t "Path is already protected." "该路径已在保护列表中。")"
