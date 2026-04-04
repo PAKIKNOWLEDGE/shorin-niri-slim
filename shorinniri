@@ -324,10 +324,10 @@ apply_user_configs() {
     fi
     
     if command -v gsettings >/dev/null 2>&1; then
-        gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
-        gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark" 2>/dev/null || true
-        gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty 2>/dev/null || true
-        gsettings set org.gnome.desktop.wm.preferences button-layout ":close" 2>/dev/null || true
+        dbus-launch gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
+        dbus-launch gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark" 2>/dev/null || true
+        dbus-launch gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty 2>/dev/null || true
+        dbus-launch gsettings set org.gnome.desktop.wm.preferences button-layout ":close" 2>/dev/null || true
     fi
     
     if [[ -f "$HOME/.config/gtk-3.0/bookmarks" ]]; then
