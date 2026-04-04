@@ -29,6 +29,7 @@ binds {
     Mod+F5 hotkey-overlay-title="快速存档 Quick save" {spawn "quicksave";}
     Mod+F8 hotkey-overlay-title="快速读档 Quick load" {spawn "quickload";}
     Mod+F9 hotkey-overlay-title="切换护眼模式 Toggle sunset" {spawn "~/.local/bin/toggle-wlsunset";}
+    Mod+F12 hotkey-overlay-title="截取所有显示器 Screenshot All Monitor"  {spawn-sh  "grim - | satty -f - & pw-play /usr/share/sounds/freedesktop/stereo/camera-shutter.oga ";}
 
     // niri-sidebar扩展相关
     // 警告：这是实验性功能
@@ -50,7 +51,6 @@ binds {
     Mod+F4 hotkey-overlay-title="开关任务栏 Toggle bar" {spawn-sh "pkill waybar && pkill cava || waybar ";}
     // 临时开一个浮动终端
     Mod+Slash hotkey-overlay-title="临时终端 Quick Terminal" {spawn "kitty" "--single-instance" "--class" "quickterminal";}
-    Mod+F12 hotkey-overlay-title=null {spawn "kitty" "--class" "quickterminal";}
     //打开浏览器
     Mod+B hotkey-overlay-title="浏览器 Browser" { spawn "firefox"; }        
     //opencode ai助手
