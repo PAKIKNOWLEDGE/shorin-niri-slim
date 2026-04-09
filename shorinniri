@@ -40,6 +40,8 @@ CACHE_FILE="$HOME/.cache/shorin-niri-software.cache"
 # 3. 软件清单列表 (外围全家桶)
 # ==========================================
 TARGET_SOFTWARE=(
+    # --- Main Meta Package ---
+    "shorin-niri-git" "xdg-desktop-portal-gnome" "cliphist-tui-git"
     # --- Desktop Extras & Media ---
     "breeze-cursors" "mpv" "satty" "wf-recorder" "wl-screenrec-git" "imv"
     # --- Fonts ---
@@ -153,7 +155,7 @@ manage_software() {
         if [[ ${#deprecated[@]} -gt 0 ]]; then
             warn "$(_t "The following packages are no longer required by Shorin Niri:" "Shorin Niri 已不再将以下软件作为默认组件:")"
             for dpkg in "${deprecated[@]}"; do echo -e "  ${C_YEL}- $dpkg${C_DEF}"; done
-            info "$(_t "You can manually remove them: sudo pacman -Rns ${deprecated[*]}" "如果不需要，可手动清理: sudo pacman -Rns ${deprecated[*]}")"
+            info "$(_t "You can manually remove them: paru -Rns ${deprecated[*]}" "如果不需要，可手动清理: paru -Rns ${deprecated[*]}")"
             echo ""
         fi
     fi
@@ -430,7 +432,41 @@ remove_dotfiles() {
         sudo rmdir "/etc/firefox/policies" "/etc/firefox" 2>/dev/null
     fi
     
-    ok "$(_t "Cleanup complete! Removed $removed_count files." "清理完成！精准移除了 $removed_count 个核心配置文件。")"
+    ok "$(_t "Cleanup complete! Removed $removed_count files." "配置清理完成！精准移除了 $removed_count 个核心配置文件。")"
+
+    # ==========================================
+    # 新增：温柔地处理软件包卸载建议
+    # ==========================================
+    if [[ -f "$CACHE_FILE" ]]; then
+        step "$(_t "Software Cleanup Suggestion" "配套软件清理建议")"
+        info "$(_t "Shorin Niri previously installed the following optional software:" "Shorin Niri 此前为您安装了以下配套软件：")"
+        
+        local cached_pkgs=()
+        mapfile -t cached_pkgs < "$CACHE_FILE"
+        local installed_pkgs=()
+
+        # 过滤出当前系统中仍然安装着的包
+        for pkg in "${cached_pkgs[@]}"; do
+            if pacman -Qq "$pkg" >/dev/null 2>&1; then
+                installed_pkgs+=("$pkg")
+            fi
+        done
+
+        if [[ ${#installed_pkgs[@]} -gt 0 ]]; then
+            # 简单列出部分，防止刷屏
+            echo -e "${C_YEL}${installed_pkgs[*]}${C_DEF}" | fold -w 80 -s
+            echo ""
+            warn "$(_t "Some of these packages (like firefox, kitty, fcitx5) might be used by you independently." "警告：其中某些软件（如 firefox, kitty, fcitx5）您可能在其他桌面环境下仍需要使用！")"
+            info "$(_t "If you want to completely remove them, review and run the following command manually:" "如果您确定不再需要它们，请自行检查并复制运行以下命令进行彻底卸载：")"
+            echo ""
+            # 注意：此处推荐使用 paru -Rns
+            echo -e "    ${C_RED}paru -Rns ${installed_pkgs[*]}${C_DEF}"
+            echo ""
+        fi
+        
+        # 顺便清理缓存文件本身
+        rm -f "$CACHE_FILE"
+    fi
 }
 
 # ==========================================
