@@ -418,7 +418,6 @@ apply_user_configs() {
     fi
     
     shorin link >/dev/null 2>&1 || true
-    curl -sL shorin.xyz/niri-blur-toggle | bash >/dev/null 2>&1 || true
     
     mkdir -p "$HOME/.config/niri/dms"
     touch "$HOME/.config/niri/dms/colors.kdl"
