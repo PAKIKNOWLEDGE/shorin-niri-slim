@@ -52,6 +52,9 @@ quicksave 快速存档
 【窗口背景模糊（blur）】
 blur相关的设置在.config/niri/blur.kdl里。不喜欢可以自己调整。
 
+【剪贴板同步】
+为了解决qq以wayland运行时的剪贴板异常，我自制了linuxqq-clipsync服务，在~/.config/niri/config.kdl中设置了自动启动。如果你因为这个剪贴板同步导致剪贴板出现异常，可以自行删除，如果可以的话麻烦到我的github仓库提交一下bug。
+
 【有趣实用的TUI软件（基于终端的用户交互程序）】
 命令：作用
 gdu：磁盘空间管理
