@@ -7,10 +7,12 @@
 // 这是niri的配置文件，我写了很多注释方便阅读，同时保留了部分英文注释
 // 自25.11版本起，niri的配置文件支持了拆分，每一条include都代表把已经拆分出去的配置文件嵌入进来。
 include "binds.kdl"
-include "rule.kdl"
+include optional=true "rule.kdl"
 include optional=true "output.kdl"
-include "animations.kdl"
-include "layout.kdl"
+include optional=true "animations.kdl"
+include optional=true "layout.kdl"
+include optional=true "blur.kdl" 
+include optional=true "debug.kdl"
 // 截图保存位置
 screenshot-path "~/Pictures/Screenshots/Niri-screenshots/%Y-%m-%d %H-%M-%S.png"
 
@@ -124,7 +126,7 @@ input {
 	// off
         // natural-scroll
         // 鼠标速度
-        accel-speed -0.15
+        accel-speed 0
         // 禁用鼠标加速 
         accel-profile "flat"
 	// scroll-method "no-scroll"
