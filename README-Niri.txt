@@ -50,7 +50,7 @@ quicksave 快速存档
 运行shorin命令可以看到所有可用的便利命令
 
 【窗口背景模糊（blur）】
-blur相关的设置在.config/niri/blur.kdl里。不喜欢可以自己调整。
+blur相关的设置在.config/niri/blur.kdl里。不喜欢可以自己调整。全局透明度的设置在rule.kdl里。
 
 【waybar-niri-taskbar-git】
 这是一个waybar的dock模块，在waybar上显示已打开的应用，感兴趣的可以安装（注意：这个模块和niri-git冲突）。
