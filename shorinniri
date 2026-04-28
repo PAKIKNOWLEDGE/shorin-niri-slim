@@ -50,7 +50,7 @@ TARGET_SOFTWARE=(
     # --- File Manager & Core Utils ---
     "nautilus" "thunar" "file-roller" "gvfs-smb" "gvfs-mtp" "gvfs-gphoto2"
     "nautilus-open-any-terminal" "gnome-keyring" "tumbler" "poppler-glib"
-    "ffmpegthumbnailer" "webp-pixbuf-loader" "libgsf" "xdg-desktop-portal-gtk"
+    "ffmpegthumbnailer" "webp-pixbuf-loader" "libgsf" "xdg-desktop-portal-gtk" "icoextract"
     "gst-plugins-base" "gst-plugins-good" "gst-libav" "thunar-archive-plugin" "thunar-volman"
     # --- Standard CLI/GUI Packages ---
     "bat" "bazaar" "bluetui" "clipnotify" "xclip" "eza" "fish" "starship" "zoxide"
