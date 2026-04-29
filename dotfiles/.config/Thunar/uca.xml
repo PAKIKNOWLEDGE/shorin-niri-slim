@@ -5,7 +5,7 @@
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
 	<unique-id>1763109685799433-1</unique-id>
-	<command>kitty -e fish</command>
+	<command>kitty</command>
 	<description>Example for a custom action</description>
 	<range></range>
 	<patterns>*</patterns>
@@ -125,10 +125,26 @@ for line in sys.stdin:
 	<name>在此处打开VSCode</name>
 	<submenu></submenu>
 	<unique-id>1776582964937744-1</unique-id>
-	<command>code %d</command>
+	<command>code %F</command>
 	<description></description>
 	<range>*</range>
 	<patterns>*</patterns>
 	<directories/>
+</action>
+<action>
+	<icon></icon>
+	<name>获取所有权</name>
+	<submenu></submenu>
+	<unique-id>1777472832087395-1</unique-id>
+	<command>getown %F</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
 </action>
 </actions>
