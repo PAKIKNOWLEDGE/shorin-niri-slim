@@ -1,64 +1,84 @@
 #!/bin/bash
 
-# 1. 如果是从菜单中选中正常桌面应用，直接运行
+# 0. 拦截空输入：如果什么都没输入直接回车，直接退出
+[ -z "$*" ] && exit 0
+
+# 1. 正常桌面应用直通车
 if [ -n "$FUZZEL_DESKTOP_FILE_ID" ] || [ -n "$DESKTOP_ENTRY_ID" ]; then
     exec "$@"
 fi
 
-# 2. 获取你输入的所有字符
 INPUT="$*"
+
+# ==========================================
+# 网址直达检测 (增强版正则)
+# ==========================================
+# 兼容了 example.com?query=1 和 example.com#top 这种没有斜杠的情况
+URL_REGEX="^(https?://)?([a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|localhost|([0-9]{1,3}\.){3}[0-9]{1,3})(:[0-9]+)?(/.*|\?.*|#.*)?$"
+
+if [[ ! "$INPUT" == *" "* ]] && [[ "$INPUT" =~ $URL_REGEX ]]; then
+    TARGET_URL="$INPUT"
+    if [[ ! "$INPUT" =~ ^https?:// ]]; then
+        TARGET_URL="https://$INPUT"
+    fi
+    exec xdg-open "$TARGET_URL"
+fi
 
 # ==========================================
 # 时区检测与默认搜索引擎设置
 # ==========================================
-DEFAULT_ENGINE="https://www.google.com/search?q=" # 先假定为 Google
+DEFAULT_ENGINE="https://www.google.com/search?q="
 
-# 尝试获取当前系统的时区设置
-# 优先使用现代 Linux 标准的 timedatectl，如果不支持则读取 /etc/localtime 软链接
-if command -v timedatectl >/dev/null 2>&1; then
-    TZ=$(timedatectl show --property=Timezone --value 2>/dev/null)
-elif [ -L /etc/localtime ]; then
-    TZ=$(readlink /etc/localtime)
-else
-    TZ=$(cat /etc/timezone 2>/dev/null)
-fi
-
-# 如果时区包含 Asia/Shanghai (中国大陆标准时区)，则将默认引擎切换为 Bing
-if [[ "$TZ" == *"Asia/Shanghai"* ]]; then
+# 优化：优先读取环境变量，减少 IO 和子进程开销
+if [[ -n "$TZ" && "$TZ" == *"Asia/Shanghai"* ]]; then
     DEFAULT_ENGINE="https://www.bing.com/search?q="
+else
+    # 环境变量没有时再动用系统命令
+    if command -v timedatectl >/dev/null 2>&1; then
+        SYS_TZ=$(timedatectl show --property=Timezone --value 2>/dev/null)
+    elif [ -L /etc/localtime ]; then
+        SYS_TZ=$(readlink /etc/localtime)
+    else
+        SYS_TZ=$(cat /etc/timezone 2>/dev/null)
+    fi
+
+    if [[ "$SYS_TZ" == *"Asia/Shanghai"* ]]; then
+        DEFAULT_ENGINE="https://www.bing.com/search?q="
+    fi
 fi
 
 # ==========================================
-# 解析智能前缀 (使用 Bash 正则表达式)
+# 解析智能前缀 (正则拆分 + case 路由)
 # ==========================================
-if [[ "$INPUT" =~ ^g[[:space:]]+(.*) ]]; then
-    SEARCH_URL="https://www.google.com/search?q="
-    QUERY="${BASH_REMATCH[1]}"
-
-elif [[ "$INPUT" =~ ^bili[[:space:]]+(.*) ]]; then
-    SEARCH_URL="https://search.bilibili.com/all?keyword="
-    QUERY="${BASH_REMATCH[1]}"
-
-elif [[ "$INPUT" =~ ^yt[[:space:]]+(.*) ]]; then
-    SEARCH_URL="https://www.youtube.com/results?search_query="
-    QUERY="${BASH_REMATCH[1]}"
-
-elif [[ "$INPUT" =~ ^b[[:space:]]+(.*) ]]; then
-    SEARCH_URL="https://www.bing.com/search?q="
-    QUERY="${BASH_REMATCH[1]}"
-
-elif [[ "$INPUT" =~ ^gh[[:space:]]+(.*) ]]; then
-    SEARCH_URL="https://github.com/search?q="
-    QUERY="${BASH_REMATCH[1]}"
-
+# 尝试将输入拆分为 "前缀" + "后续关键词"
+if [[ "$INPUT" =~ ^([a-zA-Z0-9_]+)[[:space:]]+(.*) ]]; then
+    PREFIX="${BASH_REMATCH[1]}"
+    QUERY="${BASH_REMATCH[2]}"
+    
+    # 集中管理你的搜索引擎前缀，添加新引擎非常简单
+    case "$PREFIX" in
+        g)    SEARCH_URL="https://www.google.com/search?q=" ;;
+        bili) SEARCH_URL="https://search.bilibili.com/all?keyword=" ;;
+        yt)   SEARCH_URL="https://www.youtube.com/results?search_query=" ;;
+        b)    SEARCH_URL="https://www.bing.com/search?q=" ;;
+        gh)   SEARCH_URL="https://github.com/search?q=" ;;
+        # 如果前缀不在上面的列表里，当作普通搜索处理（例如输入了 "vue js" 却被正则抓到了 vue 前缀）
+        *)    SEARCH_URL="$DEFAULT_ENGINE"; QUERY="$INPUT" ;;
+    esac
 else
-    # 没有匹配到前缀，使用根据时区判断出的默认搜索引擎
+    # 没有前缀，直接使用默认引擎
     SEARCH_URL="$DEFAULT_ENGINE"
     QUERY="$INPUT"
 fi
 
-# 3. 对提取出的查询词进行 URL 编码
-query_encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$QUERY")
+# ==========================================
+# URL 编码与执行
+# ==========================================
+# 优先使用 jq (速度极快)，如果没有安装 jq，则退回到 python3
+if command -v jq >/dev/null 2>&1; then
+    query_encoded=$(jq -rn --arg x "$QUERY" '$x|@uri')
+else
+    query_encoded=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$QUERY")
+fi
 
-# 4. 拼接 URL 并调用浏览器
 exec xdg-open "${SEARCH_URL}${query_encoded}"
