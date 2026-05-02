@@ -61,7 +61,7 @@ TARGET_SOFTWARE=(
     "shorin-contrib-git" "linuxqq-clipsync-git" "ddcutil-service" "python-pywalfox"
     "waypaper-git" "niri-sidebar-git" "wl-longshot-git" "shorin-screenrec-menu-git"
     # --- Input Method ---
-    "fcitx5" "fcitx5-configtool" "fcitx5-gtk" "fcitx5-qt" "fcitx5-rime" "rime-ice-git" "rime-wubi" "rime-wanxiang-gram-zh-hans"
+    "fcitx5" "fcitx5-configtool" "fcitx5-gtk" "fcitx5-qt" "fcitx5-rime" "rime-ice-git" "rime-wubi" "rime-wanxiang-gram-zh-hans" "rime-llm-translator-git"
 )
 
 # 系统级强制保护黑名单
@@ -418,6 +418,12 @@ apply_user_configs() {
     fi
     
     shorin link >/dev/null 2>&1 || true
+
+    if command -v rime-llm-config >/dev/null 2>&1; then
+        info "$(_t "Initializing Rime LLM Translator (AI Input Method)..." "正在为您自动配置 Rime LLM Translator 大模型联想...")"
+        rime-llm-config init
+        echo ""
+    fi
     
     mkdir -p "$HOME/.config/niri/dms"
     touch "$HOME/.config/niri/dms/colors.kdl"
