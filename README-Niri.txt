@@ -39,6 +39,9 @@ sudo systemctl restart NetworkManager
 super+空格切换输入法。第一次使用输入法有可能无法使用，重启一下输入法可以解决。
 f4可以打开菜单。如果出现卡A的情况可以试试按右shift解决。
 使用fcitx5配置可以对输入法进行细节配置
+【输入法Ai大模型联想词】
+我自制了`rime-llm-translator`功能，给输入法接入ai进行云拼音联想，还可以在输入法直接跟ai聊天。你可以试试打一些拼音然后输入vv呼叫ai进行处理，还可以试试“call:随便什么指令”。我事先准备的硅基流动的免费模型效果很垃圾，你可以运行`rime-llm-conffig`命令配置你自己的ai。我试下来效果最好的是Gemini。
+详情看仓库：https://github.com/SHORiN-KiWATA/rime-llm-translator
 
 【实用命令】
 pac 安装软件 (安装软件还可以用bazaar，这是flatpak软件商城)
