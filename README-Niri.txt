@@ -9,7 +9,7 @@ Shorin一键配置脚本: https://shorin.xyz/wiki/archsetup
 shorinniri命令可以对shorinniri桌面进行init初始化、update更新、remove移除等操作，操作前都会备份配置文件到.cache下，如果你有东西被意外覆盖可以去找回。详情看shorinniri命令的帮助信息。
 
 【Ai助手】
-有一个叫作opencode的开源ai助手，默认键位是Mod+Alt+O（英文字母O），有免费模型可以用。如果有查找文件、查询系统信息之类的简单的需求直接询问这个Ai助手，例如："我的快捷键配置文件在哪里？""我要怎么安装软件"等。PS: 谨慎使用ai修改文件。
+有一个叫作opencode的开源ai助手，默认键位是Mod+Alt+O（英文字母O），有免费模型可以用。如果有查找文件、查询系统信息之类的简单的需求直接询问这个Ai助手，例如："我的快捷键配置文件在哪里？""我要怎么安装软件"等。PS: 谨慎使用ai修改文件。如果你不需要可以`yay -Rns opencode删除`
 
 【重要按键】
 super+shift+/ 打开按键教程
@@ -28,17 +28,12 @@ super+左键 移动窗口
 super+V 切换浮动窗口
 super+F10 随机更换壁纸（壁纸存放在~/Pictures/Wallpapers目录）
 super+shift+F10 下载随机动漫壁纸
-详细的按键注释看~/.config/niri里的.kdl文件。
-
-
-如果出现网络问题可以进行以下操作更换wifi后端：
-sudo rm /etc/NetworkManager/conf.d/iwd.conf
-sudo systemctl restart NetworkManager
+详细的按键注释看~/.config/niri里的binds.kdl文件。
 
 【输入法】
 super+空格切换输入法。第一次使用输入法有可能无法使用，重启一下输入法可以解决。
-f4可以打开菜单。如果出现卡A的情况可以试试按右shift解决。
-使用fcitx5配置可以对输入法进行细节配置
+切换为中文后f4可以打开菜单。如果出现卡A的情况可以试试按右shift解决。
+使用fcitx5-configtool可以对输入法进行细节配置
 【输入法Ai大模型联想词】
 我自制了`rime-llm-translator`功能，给输入法接入ai进行云拼音联想，还可以在输入法直接跟ai聊天。你可以试试打一些拼音然后输入vv呼叫ai进行处理，还可以试试“call:随便什么指令”。我事先准备的硅基流动的免费模型效果很垃圾，你可以运行`rime-llm-conffig`命令配置你自己的ai。我试下来效果最好的是Gemini。
 详情看仓库：https://github.com/SHORiN-KiWATA/rime-llm-translator
@@ -50,13 +45,14 @@ mirror-update 更新镜像源
 sysup 更新系统
 clean 系统清理
 quicksave 快速存档
+quickload 快速读档
 运行shorin命令可以看到所有可用的便利命令
 
 【窗口背景模糊（blur）】
 blur相关的设置在.config/niri/blur.kdl里。不喜欢可以自己调整。全局透明度的设置在rule.kdl里。
 
 【waybar-niri-taskbar-git】
-这是一个waybar的dock模块，在waybar上显示已打开的应用，感兴趣的可以安装（注意：这个模块和niri-git冲突）。
+这是一个waybar的dock模块，在waybar上显示已打开的应用，感兴趣的可以安装这个包后编辑~/.config/waybar/config.jsonc启用taskbar模块（注意：这个模块仅支持发行版本的niri）。
 
 【剪贴板同步】
 为了解决qq以wayland运行时的剪贴板异常，我自制了linuxqq-clipsync服务，在~/.config/niri/config.kdl中设置了自动启动。如果你因为这个剪贴板同步导致剪贴板出现异常，可以自行删除，如果可以的话麻烦到我的github仓库提交一下bug。
