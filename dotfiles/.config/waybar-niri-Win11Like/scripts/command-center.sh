@@ -60,8 +60,6 @@ OPT_MIRROR=""
 CMD_MIRROR=""
 OPT_SYSUP=""
 CMD_SYSUP=""
-OPT_SHORIN=""
-CMD_SHORIN=""
 OPT_CLEAN=""
 CMD_CLEAN=""
 OPT_DEEP_CLEAN=""
@@ -97,15 +95,6 @@ CMD_SYSUP=$(get_exec_cmd "sysup")
 if [[ -n "$CMD_SYSUP" ]]; then
     OPT_SYSUP="更新系统 (sysup)"
     OPTIONS_ARR+=("$OPT_SYSUP")
-fi
-
-# 探测并添加：Shorin Niri 更新 (需同时满足目录存在和命令可用)
-if [[ -d "$HOME/.local/share/shorin-niri" ]]; then
-    CMD_SHORIN=$(get_exec_cmd "shorin-update")
-    if [[ -n "$CMD_SHORIN" ]]; then
-        OPT_SHORIN="更新Shorin's Niri (shorin-update)"
-        OPTIONS_ARR+=("$OPT_SHORIN")
-    fi
 fi
 
 # 探测并添加：系统清理与深度清理
@@ -180,9 +169,6 @@ case "$SELECTED" in
         ;;
     "$OPT_SYSUP")
         kitty --single-instance --class command-center --title "系统更新" bash -c "$CMD_SYSUP; echo; echo '按任意键退出...'; read -n 1 -s -r"
-        ;;
-    "$OPT_SHORIN")
-        kitty --single-instance --class command-center --title "Shorin更新" bash -c "$CMD_SHORIN; echo; echo '按任意键退出...'; read -n 1 -s -r"
         ;;
     "$OPT_CLEAN")
         kitty --single-instance --class command-center --title "系统清理" bash -c "$CMD_CLEAN; echo; echo '按任意键退出...'; read -n 1 -s -r"
