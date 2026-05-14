@@ -54,12 +54,12 @@ TARGET_SOFTWARE=(
     "gst-plugins-base" "gst-plugins-good" "gst-libav" "thunar-archive-plugin" "thunar-volman"
     # --- Standard CLI/GUI Packages ---
     "bat" "bazaar" "bluetui" "clipnotify" "xclip" "eza" "fish" "starship" "zoxide"
-    "chafa" "timg" "imagemagick" "waifu2x-ncnn-vulkan" "jq" "nwg-look" "pacman-contrib"
+    "chafa" "timg" "imagemagick" "jq" "nwg-look" "pacman-contrib"
     "wlsunset" "pavucontrol" "downgrade" "strace" "xdg-terminal-exec" "kitty" "firefox"
-    "fastfetch" "btop" "gdu" "opencode"
+    "fastfetch" "btop" "gdu"
     # --- AUR Specific Packages ---
-    "shorin-contrib-git" "linuxqq-clipsync-git" "ddcutil-service" "python-pywalfox"
-    "waypaper-git" "niri-sidebar-git" "wl-longshot-git" "shorin-screenrec-menu-git"
+    "shorin-contrib-git" "waifu2x-ncnn-vulkan"
+    "waypaper-git" "wl-longshot-git"
     # --- Input Method ---
     "fcitx5" "fcitx5-configtool" "fcitx5-gtk" "fcitx5-qt" "fcitx5-rime" "rime-ice-git" "rime-wubi" "rime-wanxiang-gram-zh-hans" "rime-llm-translator-git"
 )
@@ -89,8 +89,6 @@ UPDATE_IGNORE=(
     ".config/swayosd/colors.css"
     ".config/fastfetch/config.jsonc"
     ".cache/matugen/hypr/colors.conf"
-    ".cache/matugen_vscode_inject.json"
-    ".config/obs-studio/themes/matugen.obt"
 )
 
 # ==========================================
@@ -425,15 +423,13 @@ apply_user_configs() {
         echo ""
     fi
     
-    mkdir -p "$HOME/.config/niri/dms"
-    touch "$HOME/.config/niri/dms/colors.kdl"
     if [[ ! -f "$HOME/.config/niri/output.kdl" && -f "$HOME/.config/niri/output-example.kdl" ]]; then
         cp "$HOME/.config/niri/output-example.kdl" "$HOME/.config/niri/output.kdl"
     fi
 
     local doc_src="/usr/share/doc/shorin-niri/README-Niri.txt"
     if [[ -f "$doc_src" ]]; then cp -n "$doc_src" "$HOME/必看-shoirn-Niri使用方法.txt" 2>/dev/null || true; fi
-    
+
     ok "$(_t "Environment initialization complete!" "环境初始化全部完成！")"
 }
 
@@ -454,8 +450,7 @@ remove_dotfiles() {
         if [[ -e "$dest_file" || -L "$dest_file" ]]; then rm -f "$dest_file"; ((removed_count++)); fi
     done < <(find . -type f -print0)
     
-    rm -f "$HOME/.config/niri/dms/colors.kdl" "$HOME/必看-shoirn-Niri使用方法.txt" 2>/dev/null
-    rmdir "$HOME/.config/niri/dms" 2>/dev/null
+    rm -f "$HOME/必看-shoirn-Niri使用方法.txt" 2>/dev/null
     
     if [[ -f "/etc/firefox/policies/policies.json" ]]; then
         sudo rm -f "/etc/firefox/policies/policies.json"

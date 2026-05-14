@@ -1,79 +1,56 @@
-// Animation settings.
-// The wiki explains how to configure individual animations:
-// https://yalter.github.io/niri/Configuration:-Animations
-// https://yalter.github.io/niri/Configuration:-Animations
+// ============================================
+// 动画配置 — T430 核显性能优化版
+// Intel HD 4000 共享显存带宽有限，策略：
+//   1. 提高阻尼 (damping-ratio) 减少回弹振荡
+//   2. 降低刚度 (stiffness) 让动画更柔和省资源
+//   3. 加速动画完成 (slowdown < 1.0)
+//   4. 关闭非必要的过渡动画
+// ============================================
 animations {
-    // 禁用全部动画
-    //off
+    // 总体动画速度: < 1 加快, > 1 减慢
+    // 设 0.75 让动画更快完成，减少 GPU 渲染帧数
+    slowdown 0.75
 
-    // 总体动画速度，浮点数(带小数点)，默认为1，小于1加快，大于1减慢
-    slowdown 0.98114514
-    
-
-    // 切换工作区的动画
+    // ---- 工作区切换 ----
+    // 高阻尼无回弹，快速到位
     workspace-switch {
-    	// 具体动画设置代码块里的off可以单独禁用此动画
-	//off
-	// spring弹簧动画类型
-	// damping-ratio 设置阻尼，默认1.0（仅在触摸板快速滑动时产生回弹），小于1.0会产生回弹，大于1.0会导致bug。
-	// stiffness 设置刚度，数值越大动画会越硬越生涩，数值调低更容易产生回弹 
-	// epsilon 当动画运动速度和距离小于这个值的时候会判定动画停止
-        spring damping-ratio=0.82 stiffness=400 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=300 epsilon=0.001
     }
 
-    // 左右切换聚焦的动画
+    // ---- 左右切换聚焦 ----
     horizontal-view-movement {
-        spring damping-ratio=0.84 stiffness=400 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=300 epsilon=0.001
     }
 
-    // 打开窗口的动画
-    /-window-open {
-    	// 动画时长
-        duration-ms 150
-	// 动画曲线
-        curve "ease-out-expo"
-
-	// niri可用的动画曲线：
-	// ease-out-quad 比较平缓的加速-->减速曲线，不明显，算是更生动的线性动画
-	// ease-out-cubic 较快加速后迅速减速
-	// ease-out-expo 超快加速后立马减速
-	// linear 纯线性 
-	// cubic-bezier 自定义动画曲线，通过 curve "cubic-bezier" 0.05 0.7 0.1 1 的方式传入参数使用
-	// 设计曲线可以使用 https://easings.co/
-	// 预览预设曲线效果可以看 https://easings.net/
-    }
+    // ---- 窗口打开 ----
+    // 直接用简单弹簧，关闭耗时的 ease-out 曲线
     window-open {
-        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=600 epsilon=0.001
     }
-    
-    // 关闭窗口
-    /-window-close {
-        duration-ms 150 
-        curve "ease-out-quad"
-    }
+
+    // ---- 窗口关闭 ----
     window-close {
-        spring damping-ratio=0.8 stiffness=400 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=500 epsilon=0.001
     }
 
-    // 移动窗口的动画。包括合并列、上下移动窗口、合并/踢出列等。
+    // ---- 窗口移动 ----
     window-movement {
-        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=500 epsilon=0.001
     }
-    
-    // 按照预设调整窗口大小时的动画
+
+    // ---- 窗口缩放 ----
     window-resize {
-        spring damping-ratio=0.9 stiffness=500 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=400 epsilon=0.001
     }
-   
-    // 开启截图UI的动画
+
+    // ---- 截图界面 ----
     screenshot-ui-open {
-        duration-ms 300 
+        duration-ms 150
         curve "ease-out-quad"
     }
 
-    // 开关overview的动画
+    // ---- Overview 开关 ----
     overview-open-close {
-        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=600 epsilon=0.001
     }
-
 }

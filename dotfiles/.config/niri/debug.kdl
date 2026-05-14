@@ -1,8 +1,15 @@
-// 禁止niri使用N卡（别取消下面这段的注释）
-//debug {
-//
-//    ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-card"
-//    ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
-//}
+// ============================================
+// 调试配置 — T430 Intel HD 4000 核显调优
+// ============================================
 
+// Intel 核显 (Ivy Bridge) 在 Wayland 下使用 i915 驱动
+// 如遇到画面撕裂，取消下面注释启用全屏渲染重绘:
+// debug {
+//     render-before-present true
+// }
 
+// 如需禁用某个 DRM 设备 (例如屏蔽独显):
+// debug {
+//     ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-card"
+//     ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
+// }

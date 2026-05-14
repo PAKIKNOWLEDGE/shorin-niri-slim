@@ -1,19 +1,28 @@
-// --- NIRI BLUR START ---
-// 顶层的blur配置，细节调整blur的效果
+// ============================================
+// 背景模糊 — T430 核显轻量版
+// Intel HD 4000 共享内存带宽有限:
+//   - passes 从 3 降至 1 (降低 66% 模糊着色器开销)
+//   - offset 降至 1
+//   - 浮动窗口禁用 xray (直接透视，省一次渲染)
+//   - 弹窗启用 xray (仅渲染一次缓存)
+// ============================================
 blur {
-    passes 3
-    offset 3
-    noise 0.02
-    saturation 1.5
+    passes 1
+    offset 1
+    noise 0.01
+    saturation 1.2
 }
-// 全局窗口规则。让所有普通窗口以xray的形式显示blur。xray仅渲染一次模糊版本的背景，然后将其以类似“壁纸”的形式显示在窗口后面，不是实时渲染模糊，所以完全没有性能消耗。
+
+// 普通窗口: xray 模式 — 仅渲染一次模糊背景，零持续开销
 window-rule {
     background-effect {
         xray true
         blur true
     }
 }
-// 浮动窗口禁用xray可以实时渲染模糊效果但是性能消耗高，开启xray会穿过浮动窗口底下的窗口直接透视到桌面。看个人喜好选择禁用与否吧。
+
+// 浮动窗口: 关闭实时模糊，直接透视到下层窗口或桌面
+// T430 上实时模糊会造成明显掉帧，改用简单透明
 window-rule {
     match is-floating=true
     background-effect {
@@ -21,29 +30,29 @@ window-rule {
         blur true
     }
 }
-// fuzzle专属的layer规则
+
+// Fuzzel 启动器: 保留实时模糊 (轻量级弹窗，短暂出现)
 layer-rule {
     match namespace="^launcher$"
     geometry-corner-radius 8
     background-effect {
         xray false
-	blur true
+        blur true
     }
 }
-// blur 窗口的弹出窗口
+
+// 文件管理器弹窗: 轻量模糊+半透明
 window-rule {
     match app-id="thunar"
     match app-id="Nautilus"
-    opacity 0.92
+    opacity 0.95
 
     popups {
-        geometry-corner-radius 15
-        opacity 0.92
+        geometry-corner-radius 12
+        opacity 0.95
         background-effect {
             blur true
-	    xray false
+            xray true
         }
     }
 }
-// --- NIRI BLUR END ---
-
