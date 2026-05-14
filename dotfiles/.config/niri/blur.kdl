@@ -1,58 +1,7 @@
 // ============================================
-// 背景模糊 — T430 核显轻量版
-// Intel HD 4000 共享内存带宽有限:
-//   - passes 从 3 降至 1 (降低 66% 模糊着色器开销)
-//   - offset 降至 1
-//   - 浮动窗口禁用 xray (直接透视，省一次渲染)
-//   - 弹窗启用 xray (仅渲染一次缓存)
+// 背景模糊 — 已禁用
+// 极简版不使用模糊效果以降低 GPU 开销
 // ============================================
-blur {
-    passes 1
-    offset 1
-    noise 0.01
-    saturation 1.2
-}
-
-// 普通窗口: xray 模式 — 仅渲染一次模糊背景，零持续开销
-window-rule {
-    background-effect {
-        xray true
-        blur true
-    }
-}
-
-// 浮动窗口: 关闭实时模糊，直接透视到下层窗口或桌面
-// T430 上实时模糊会造成明显掉帧，改用简单透明
-window-rule {
-    match is-floating=true
-    background-effect {
-        xray true
-        blur true
-    }
-}
-
-// Fuzzel 启动器: 保留实时模糊 (轻量级弹窗，短暂出现)
-layer-rule {
-    match namespace="^launcher$"
-    geometry-corner-radius 8
-    background-effect {
-        xray false
-        blur true
-    }
-}
-
-// 文件管理器弹窗: 轻量模糊+半透明
-window-rule {
-    match app-id="thunar"
-    match app-id="Nautilus"
-    opacity 0.95
-
-    popups {
-        geometry-corner-radius 12
-        opacity 0.95
-        background-effect {
-            blur true
-            xray true
-        }
-    }
-}
+// blur 配置块已全部移除。
+// 如需重新启用，参考原始配置:
+//   blur { passes 1; offset 1; noise 0.01; saturation 1.2; }

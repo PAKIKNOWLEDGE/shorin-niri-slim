@@ -4,73 +4,56 @@
 //       ██ ██   ██ ██    ██ ██   ██ ██ ██  ██ ██
 //  ██████  ██   ██  ██████  ██   ██ ██ ██   ████
 //
-//  Shorin Niri — 重构精简版 (ThinkPad T430 优化)
-//  Fedora 44 + Plasma 6 + plasmalogin 兼容
-//  Intel HD 4000 (Ivy Bridge) 核显性能适配
+//  Shorin Niri — 极简精简版
+//  仅保留核心刚需组件，无守护进程，无动态取色，无模糊
 // ============================================
 
-// 拆分引入的各模块配置文件
 include "binds.kdl"
 include optional=true "rule.kdl"
 include optional=true "output.kdl"
 include optional=true "animations.kdl"
 include optional=true "layout.kdl"
-include optional=true "blur.kdl"
 include optional=true "debug.kdl"
 
-// 截图保存路径
 screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
 // ============================================
 // 环境变量
 // ============================================
 environment {
-    // 界面语言 — Fedora 下同样适用
     LANG "zh_CN.UTF-8"
-    // CTYPE 设英文可避免 fcitx5 输入法漏字
     LC_CTYPE "en_US.UTF-8"
-    // fcitx5 输入法环境变量
     XMODIFIERS "@im=fcitx"
-    // QT 应用使用 GTK 主题风格
     QT_QPA_PLATFORMTHEME "gtk3"
-    // Intel 核显专用渲染器 (GTK 应用启动加速)
     GSK_RENDERER "gl"
-    // 默认编辑器
     EDITOR "vim"
-    // 强制 GDK/Wayland 后端，减少 XWayland 开销
-    GDK_BACKEND "wayland"
-    // Intel 核显：启用主动缓存提升性能
-    INTEL_DEBUG "noccs"
 }
 
 // ============================================
-// 光标配置
+// 光标
 // ============================================
 cursor {
     xcursor-theme "breeze_cursors"
-    xcursor-size 24           // T430 屏幕较小，减小光标尺寸
-    hide-after-inactive-ms 10000  // 10 秒无操作自动隐藏
+    xcursor-size 24
+    hide-after-inactive-ms 10000
 }
 
 // ============================================
-// 窗口切换器 (Alt+Tab 缩略图)
+// 窗口切换器
 // ============================================
 recent-windows {
     debounce-ms 750
     open-delay-ms 150
-
     highlight {
         active-color "#999999ff"
         urgent-color "#ff9999ff"
         padding 30
         corner-radius 12
     }
-
     previews {
-        max-height 360         // 降低缩略图大小以节省显存
+        max-height 360
         max-scale 0.15
     }
-
     binds {
         Mod+Tab         { next-window scope="workspace"; }
         Mod+Shift+Tab   { previous-window scope="workspace"; }
@@ -79,85 +62,52 @@ recent-windows {
     }
 }
 
-// 颜色配置 (聚焦环等)
 include "colors.kdl"
 
 // ============================================
 // 输入设备
 // ============================================
 input {
-    keyboard {
-        xkb {
-            // 键盘布局由系统 / 显示管理器控制，留空自动检测
-        }
-        repeat-delay 250
-        repeat-rate 35
-    }
-
-    touchpad {
-        tap                     // 轻点触摸板 = 左键单击
-        natural-scroll          // 自然滚动 (类似 macOS)
-    }
-
-    mouse {
-        accel-speed 0           // 鼠标加速度归零
-        accel-profile "flat"    // 关闭鼠标加速
-    }
-
-    trackpoint {
-        // T430 小红点默认设置
-    }
+    keyboard { repeat-delay 250; repeat-rate 35; }
+    touchpad { tap; natural-scroll; }
+    mouse { accel-speed 0; accel-profile "flat"; }
 }
 
 // ============================================
-// Overview (工作区总览)
+// Overview
 // ============================================
 overview {
-    workspace-shadow {
-        // 关闭阴影以节省 GPU 资源
-        off
-    }
+    workspace-shadow { off; }
     zoom 0.5
 }
 
 // ============================================
-// 自动启动 (精简版 — 仅保留核心必要进程)
+// 自动启动 — 仅保留核心进程
 // ============================================
 
-// 壁纸守护进程
-spawn-at-startup "awww-daemon"
+// 壁纸 (waypaper 使用 swaybg 后端，无守护进程常驻)
+spawn-sh-at-startup "sleep 1 && waypaper --restore"
 
-// 随机设置一张壁纸
-spawn-sh-at-startup "sleep 1 && waypaper --random"
-
-// 权限认证弹窗 (polkit)
+// 权限认证
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
-// 屏幕分享 / 录屏 Portal
+// 屏幕分享 Portal
 spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
 
-// 通知守护进程
+// 通知守护
 spawn-at-startup "mako"
 
 // 任务栏
 spawn-at-startup "waybar"
 
-// fcitx5 输入法
+// 输入法
 spawn-at-startup "fcitx5"
 
-// 剪贴板历史 (cliphist)
+// 剪贴板历史
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 
-// 音量/亮度 OSD 显示
+// OSD 显示
 spawn-at-startup "swayosd-server"
 
-// 护眼模式 (根据经纬度自动调节色温)
-spawn-at-startup "~/.local/bin/toggle-wlsunset"
-
-// 开机时跳过快捷键教程弹窗
-hotkey-overlay {
-    skip-at-startup
-}
-
-// 隐藏窗口标题栏 (由 niri 接管)
+hotkey-overlay { skip-at-startup; }
 prefer-no-csd

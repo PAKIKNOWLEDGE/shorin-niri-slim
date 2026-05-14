@@ -1,56 +1,48 @@
 // ============================================
-// 动画配置 — T430 核显性能优化版
-// Intel HD 4000 共享显存带宽有限，策略：
-//   1. 提高阻尼 (damping-ratio) 减少回弹振荡
-//   2. 降低刚度 (stiffness) 让动画更柔和省资源
-//   3. 加速动画完成 (slowdown < 1.0)
-//   4. 关闭非必要的过渡动画
+// 动画配置 — 极简版
+// 全部使用 duration + curve，无弹簧物理
 // ============================================
 animations {
-    // 总体动画速度: < 1 加快, > 1 减慢
-    // 设 0.75 让动画更快完成，减少 GPU 渲染帧数
-    slowdown 0.75
+    // 快速完成，减少视觉等待
+    slowdown 0.6
 
-    // ---- 工作区切换 ----
-    // 高阻尼无回弹，快速到位
     workspace-switch {
-        spring damping-ratio=1.0 stiffness=300 epsilon=0.001
-    }
-
-    // ---- 左右切换聚焦 ----
-    horizontal-view-movement {
-        spring damping-ratio=1.0 stiffness=300 epsilon=0.001
-    }
-
-    // ---- 窗口打开 ----
-    // 直接用简单弹簧，关闭耗时的 ease-out 曲线
-    window-open {
-        spring damping-ratio=1.0 stiffness=600 epsilon=0.001
-    }
-
-    // ---- 窗口关闭 ----
-    window-close {
-        spring damping-ratio=1.0 stiffness=500 epsilon=0.001
-    }
-
-    // ---- 窗口移动 ----
-    window-movement {
-        spring damping-ratio=1.0 stiffness=500 epsilon=0.001
-    }
-
-    // ---- 窗口缩放 ----
-    window-resize {
-        spring damping-ratio=1.0 stiffness=400 epsilon=0.001
-    }
-
-    // ---- 截图界面 ----
-    screenshot-ui-open {
-        duration-ms 150
+        duration-ms 120
         curve "ease-out-quad"
     }
 
-    // ---- Overview 开关 ----
+    horizontal-view-movement {
+        duration-ms 120
+        curve "ease-out-quad"
+    }
+
+    window-open {
+        duration-ms 80
+        curve "ease-out-quad"
+    }
+
+    window-close {
+        duration-ms 80
+        curve "ease-out-quad"
+    }
+
+    window-movement {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+
+    window-resize {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+
+    screenshot-ui-open {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+
     overview-open-close {
-        spring damping-ratio=1.0 stiffness=600 epsilon=0.001
+        duration-ms 120
+        curve "ease-out-quad"
     }
 }

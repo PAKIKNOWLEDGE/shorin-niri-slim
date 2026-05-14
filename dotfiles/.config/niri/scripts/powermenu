@@ -26,7 +26,7 @@ CHOICE=$(echo -e "$OPTIONS" | fuzzel --dmenu --width 12 --lines 6)
 # 根据用户的选择执行相应的命令
 case "$CHOICE" in
     "$OPT_LOCK")
-        hyprlock -c ~/.config/niri/hyprlock.conf || swaylock
+        swaylock -f -c 1e1e2e
     ;;
     "$OPT_SCREEN_OFF")
         niri msg action power-off-monitors
@@ -35,7 +35,7 @@ case "$CHOICE" in
         niri msg action quit
     ;;
     "$OPT_SUSPEND")
-        niri msg action power-off-monitors && hyprlock -c ~/.config/niri/hyprlock.conf && systemctl suspend
+        niri msg action power-off-monitors && swaylock -f -c 1e1e2e && systemctl suspend
     ;;
     "$OPT_REBOOT")
         systemctl reboot
