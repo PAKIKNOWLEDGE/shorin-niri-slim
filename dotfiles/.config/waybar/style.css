@@ -431,6 +431,14 @@ window#waybar.empty #window {
     
 }
 
+#cpu,
+#memory,
+#temperature {
+    background-color: @surface_container;
+    color: @secondary;
+    padding: 0px 0.39em;
+}
+
 #battery.critical:not(.charging) {
     background-color: @surface_container;
     color: @error;

@@ -1,6 +1,6 @@
-# Shorin Niri — 极简版
+# Shorin Niri Slim — 极简版
 
-[Shorin Niri](https://github.com/SHORiN-KiWATA/shorin-niri) 桌面配置的**轻量低资源**移植版，迁移至 **Fedora**，也适用于任何现代 Linux 发行版。
+[Shorin Niri](https://github.com/SHORiN-KiWATA/shorin-niri) 桌面配置的**轻量精简版**，迁移至 **Fedora**，也适用于任何现代 Linux 发行版。
 
 本版本仅保留**核心刚需组件**——无自研扩展、无守护进程、无动态配色引擎、无背景模糊、无花哨动画。专为**低配硬件**和追求**稳定低占用**的用户设计，同时保留圆角、微透明和统一配色的清爽外观。
 

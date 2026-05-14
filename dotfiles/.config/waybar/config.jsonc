@@ -59,6 +59,9 @@
         "bluetooth",
         "network",
         "battery",
+        "cpu",
+        "memory",
+        "temperature",
         "custom/left_div#5",
         "group/powermenu"
     ]

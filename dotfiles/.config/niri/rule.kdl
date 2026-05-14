@@ -7,11 +7,6 @@
 //   - 小众非必要应用
 // ============================================
 
-// ---- Overview 壁纸 ----
-layer-rule {
-    match namespace="awww-daemonoverview"
-    place-within-backdrop true
-}
 
 // ---- 全局窗口规则 ----
 window-rule {

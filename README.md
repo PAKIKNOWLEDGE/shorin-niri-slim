@@ -1,8 +1,8 @@
-# Shorin Niri — Streamlined Edition
+# Shorin Niri Slim
 
 > A lightweight, low-end friendly port of the Shorin Niri desktop configuration.
 >
-> 轻量低配友好的 Shorin Niri 桌面配置移植版。
+> Shorin Niri 桌面配置的轻量精简版。
 
 ---
 

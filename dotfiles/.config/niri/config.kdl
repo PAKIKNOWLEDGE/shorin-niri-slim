@@ -4,7 +4,7 @@
 //       ██ ██   ██ ██    ██ ██   ██ ██ ██  ██ ██
 //  ██████  ██   ██  ██████  ██   ██ ██ ██   ████
 //
-//  Shorin Niri — 极简精简版
+//  Shorin Niri Slim
 //  仅保留核心刚需组件，无守护进程，无动态取色，无模糊
 // ============================================
 
@@ -15,7 +15,7 @@ include optional=true "animations.kdl"
 include optional=true "layout.kdl"
 include optional=true "debug.kdl"
 
-screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
+screenshot-path "~/图片/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
 // ============================================
 // 环境变量
@@ -55,8 +55,8 @@ recent-windows {
         max-scale 0.15
     }
     binds {
-        Mod+Tab         { next-window scope="workspace"; }
-        Mod+Shift+Tab   { previous-window scope="workspace"; }
+        Alt+Tab         { next-window scope="workspace"; }
+        Alt+Shift+Tab   { previous-window scope="workspace"; }
         Mod+grave       { next-window     filter="app-id"; }
         Mod+Shift+grave { previous-window filter="app-id"; }
     }

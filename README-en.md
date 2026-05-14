@@ -1,6 +1,6 @@
-# Shorin Niri — Minimal Edition
+# Shorin Niri Slim
 
-A **lightweight, low-resource** port of the [Shorin Niri](https://github.com/SHORiN-KiWATA/shorin-niri) desktop configuration, transplanted to **Fedora** and usable on any modern Linux distribution.
+A **lightweight, low-resource** port of the [Shorin Niri](https://github.com/SHORiN-KiWATA/shorin-niri) desktop configuration for Fedora and any modern Linux distribution.
 
 This edition keeps only the **essential components** — no custom extensions, no daemons, no dynamic color engine, no background blur, no fancy animations. It is designed for **low-end hardware** and users who value **stability and low resource usage** over visual effects, while keeping the clean look of rounded corners, subtle transparency, and a cohesive color scheme.
 

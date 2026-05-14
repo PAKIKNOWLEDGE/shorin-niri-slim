@@ -128,23 +128,35 @@
       "power-saver": "",
     },
   },
+  //CPU 占用
+  "cpu": {
+    "format": " {usage:02}%",
+    "interval": 5,
+    "tooltip-format": "CPU 占用: {usage:02}%"
+  },
+  //内存占用
+  "memory": {
+    "format": " {percentage:02}%",
+    "interval": 10,
+    "tooltip-format": "内存: {used:0.1f}GiB / {total:0.1f}GiB"
+  },
+  //温度
+  "temperature": {
+    "format": " {temperatureC}°C",
+    "interval": 10,
+    "tooltip-format": "CPU 温度: {temperatureC}°C"
+  },
   //截图
   "custom/screenshot": {
     "format": "",
-    "tooltip-format": "左键：快速截图（仅保存到剪贴板）\n右键：打开截图菜单\n中键：打开长截图菜单",
+    "tooltip-format": "左键：截图到剪贴板\n右键：截图菜单",
     "on-click": "~/.config/waybar/scripts/screenshot.sh",
-    "on-click-right": "~/.config/waybar/scripts/power-screenshot.sh",
-    "on-click-middle": "wl-longshot"
+    "on-click-right": "~/.config/waybar/scripts/power-screenshot.sh"
   },
   //录屏screenrec
   "custom/wfrec": {
-    "exec": "~/.config/waybar/scripts/screenrec status-json",
-    "return-type": "json",
-    //"interval": 1,                 // 每秒刷新一次
-    "signal": 9, // 与脚本里的 WAYBAR_SIG 对应
-    "tooltip": true,
-    "on-click": "shorin-screenrec-menu toggle", // 左键：开始/停止
-    "on-click-right": "shorin-screenrec-menu stop"
+    "format": "󰻃",
+    "tooltip": false
   },
   //声音模块
   "group/audio": {
@@ -204,8 +216,7 @@
     "tooltip-format": "左键：软件启动菜单\n右键：打开终端",
     "format": "",
     "on-click": "fuzzel",
-    "on-click-right":"kitty || ghostty || alacritty || foot || konsole",
-    "on-click-middle": "~/.config/scripts/niri_auto_blur_bg.sh || pkill -f niri_auto_blur_bg.sh"
+    "on-click-right":"kitty"
   },
   //电源菜单
   "group/powermenu": {
@@ -230,7 +241,7 @@
   "custom/lockscreen": {
     "tooltip-format": "左键：锁屏",
     "format": "",
-    "on-click": "hyprlock -c ~/.config/niri/hyprlock.conf || swaylock",
+    "on-click": "swaylock -f -c 1e1e2e",
     "on-scroll-up": "true",
     "on-scroll-down": "true"
   },
@@ -286,10 +297,9 @@
     ],
   },
   "custom/ddcutil-day": {
-    "tooltip-format": "左键：100%外接屏幕亮度\n右键：切换护眼模式",
+    "tooltip-format": "左键：100%外接屏幕亮度",
     "format": "󰃠",
     "on-click": "ddcutil --display 1 setvcp 10 100 ",
-    "on-click-right": "~/.local/bin/toggle-wlsunset",
     "on-scroll-up": "true",
     "on-scroll-down": "true"
   },
@@ -342,10 +352,9 @@
   "custom/colorpicker": {
     "tooltip": true,
     "format": "󱏜",
-    "on-click": "hyprpicker -a && pw-play /usr/share/sounds/freedesktop/stereo/message.oga",
-    "on-click-middle":"~/.config/scripts/matugen-select-type.sh",
+    "on-click": "niri msg pick-color | grep -oP '#[[:xdigit:]]{6}' | head -1 | wl-copy && notify-send Colorpicker '已复制颜色值'",
     "on-click-right":"waypaper",
-    "tooltip-format":"左键：提取颜色\n右键：打开壁纸切换器\n中键：切换系统配置方案",
+    "tooltip-format":"左键：提取颜色\n右键：打开壁纸切换器"
   },
   //音频可视化
   "custom/cava": {
@@ -380,11 +389,10 @@
       "has-updates": "",
       "updated": ""
     },
-    "exec": "~/.config/waybar/scripts/check-updates.sh",
-    "restart-interval": 0,
-    "on-click": "kitty -e shorin sysup",
-    "on-click-middle": "pkill -SIGUSR1 -f ~/.config/waybar/scripts/check-updates.sh",
-    "on-click-right": "kitty --class floating-term  -e shorin checkallupdates" 
+    "exec": "echo '{\"text\":\"\",\"alt\":\"updated\"}'",
+    "restart-interval": 3600,
+    "on-click": "kitty -e dnf5 upgrade",
+    "on-click-right": "kitty --class floating-term -e 'dnf5 check-update; read -p Press-Enter'"
   },
   //隐私
   "privacy": {
@@ -430,17 +438,15 @@
   "custom/clipboard":{
     "format":"󰅍",
     "on-click":"kitty --class cliphist-tui -e cliphist-tui",
-    "on-click-middle":"pkill wl-paste || true && wl-paste --watch cliphist store && sleep 0.5 && systemctl restart --user clipsync-git",
     "on-click-right":"rm -f ~/.cache/cliphist/db",
-    "tooltip-format":"左键：打开剪贴板\n右键：清除剪贴板历史\n中键：重启剪贴板后台服务"
+    "tooltip-format":"左键：打开剪贴板\n右键：清除剪贴板历史"
   },
   // 壁纸切换
  "custom/wallpapers":{
     "format":"󰸉",
-    "tooltip-format":"左键：打开壁纸切换器\n右键：随机切换壁纸\n中键：随机下载动漫壁纸",
+    "tooltip-format":"左键：打开壁纸切换器\n右键：随机切换壁纸",
     "on-click":"waypaper",
-    "on-click-right":"waypaper --random",
-    "on-click-middle":"~/.config/scripts/random-anime-wallpaper.sh"
+    "on-click-right":"waypaper --random"
  },
  // 常用命令
  "custom/actions":{

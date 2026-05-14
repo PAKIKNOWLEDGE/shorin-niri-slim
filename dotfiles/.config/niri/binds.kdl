@@ -1,7 +1,6 @@
 // ============================================
-// 快捷键绑定 — Shorin Niri 精简版
-// 保留完整快捷键体系，仅移除自研扩展引用
-// 适配 ThinkPad T430 / Fedora 44 / Plasma 6
+// 快捷键绑定 — Shorin Niri Slim
+// 保留完整快捷键体系
 // ============================================
 
 binds {
@@ -14,7 +13,7 @@ binds {
     // ============================================
     // Alt+Tab 快速窗口切换 (fzf 菜单)
     // ============================================
-    Alt+Tab hotkey-overlay-title="快速跳转窗口 Quick window switch menu" { spawn "~/.config/niri/scripts/niri-quick-switch-fuzzel.py"; }
+    Mod+Tab hotkey-overlay-title="快速跳转窗口 Quick window switch menu" { spawn "~/.config/niri/scripts/niri-quick-switch-fuzzel.py"; }
 
     // ============================================
     // 壁纸相关
@@ -27,12 +26,6 @@ binds {
     // ============================================
     Mod+Shift+F4    hotkey-overlay-title="隐藏任务栏 Hide bar" { spawn-sh "killall -SIGUSR1 waybar"; }
     Mod+F4          hotkey-overlay-title="开关任务栏 Toggle bar" { spawn-sh "pkill waybar || waybar "; }
-
-    // ============================================
-    // Btrfs 快照 (quicksave / quickload)
-    // ============================================
-    Mod+F5          hotkey-overlay-title="快速存档 Quick save" { spawn "quicksave"; }
-    Mod+F8          hotkey-overlay-title="快速读档 Quick load" { spawn "quickload"; }
 
     // ============================================
     // 截图
@@ -50,8 +43,8 @@ binds {
     // 终端
     // ============================================
     Mod+Slash       hotkey-overlay-title="临时终端 Quick Terminal" { spawn "kitty" "--single-instance" "--class" "quickterminal"; }
-    Mod+T           hotkey-overlay-title="共享终端 Terminal" { spawn "kitty" "--single-instance"; }
-    Mod+Return      hotkey-overlay-title="独立终端 Terminal" { spawn "kitty"; }
+    Mod+Return      hotkey-overlay-title="终端 Terminal" { spawn "kitty"; }
+    Mod+T           hotkey-overlay-title="共享终端 Shared Terminal" { spawn "kitty" "--single-instance"; }
 
     // ============================================
     // 应用程序启动
@@ -59,7 +52,7 @@ binds {
     Mod+B           hotkey-overlay-title="浏览器 Browser" { spawn "firefox"; }
     Mod+E           hotkey-overlay-title="文档管理器 Filemanager" { spawn-sh "thunar || env GSK_RENDERER=gl nautilus --new-window"; }
     Mod+Alt+E       hotkey-overlay-title=null { spawn "env" "GSK_RENDERER=gl" "nautilus" "--new-window"; }
-    Mod+Z           hotkey-overlay-title="程序菜单 Applauncher" { spawn "fuzzel"; }
+    Mod+Space       hotkey-overlay-title="程序菜单 App launcher" { spawn "fuzzel"; }
 
     // ============================================
     // 锁屏 / 电源
