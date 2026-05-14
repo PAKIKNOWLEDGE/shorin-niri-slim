@@ -176,7 +176,6 @@ window#waybar.empty #window {
 }
 
 #power-profiles-daemon,
-#custom-colorpicker,
 #idle_inhibitor {
     background-color: @tertiary;
     color: @on_tertiary;
@@ -255,12 +254,6 @@ window#waybar.empty #window {
     color: @secondary;
     padding: 0px;
     font-size: 1.39em; /* 25px */
-}
-
-#custom-cava {
-    background-color: @surface_container_high;
-    color: @primary;
-    padding: 0px 0.35em; /* 7px */
 }
 
 #mpris {
