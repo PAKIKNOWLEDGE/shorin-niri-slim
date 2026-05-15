@@ -11,16 +11,16 @@ Stripped down to **essential components only** — no custom extensions, no back
 | Aspect | Original | Slim |
 |--------|----------|------|
 | **Animations** | Spring physics (bouncy) | Simple duration + ease-out |
-| **Background blur** | 3 passes + xray | **Disabled** |
-| **Dynamic color** | matugen engine | **Static hardcoded colors** |
-| **Wallpaper** | awww (persistent daemon) | **waypaper + swaybg** |
-| **Lock screen** | hyprlock | **swaylock** — single binary |
-| **Extensions** | niri-sidebar, niriusd, linuxqq-clipsync | **Removed** |
-| **Auto-start** | 16+ daemons | **8 essential only** |
-| **Scripts** | 10+ custom scripts | **4 retained** |
-| **Waybar themes** | Dual | **Single default** |
-| **Key bindings** | Extension hotkeys included | **Clean** — core only |
-| **Hardware** | Modern desktop | **Low-end / iGPU friendly** |
+| **Background blur** | 3 passes + xray | Disabled |
+| **Dynamic color** | matugen engine | Static hardcoded colors |
+| **Wallpaper** | awww (persistent daemon) | waypaper + swaybg |
+| **Lock screen** | hyprlock (blur + animations) | swaylock — single binary |
+| **Extensions** | niri-sidebar, niriusd, linuxqq-clipsync | Removed |
+| **Auto-start** | 16+ daemons | 8 essential only |
+| **Scripts** | 10+ custom scripts | 4 retained |
+| **Waybar themes** | Dual (default + Win11Like) | Single default |
+| **Key bindings** | Extension hotkeys included | Clean — core only |
+| **Hardware** | Modern desktop | Low-end / iGPU friendly |
 
 Full keybinding layout, window rules, workspace logic and visual design are **preserved intact**.
 
@@ -31,7 +31,9 @@ Full keybinding layout, window rules, workspace logic and visual design are **pr
 ### Core
 ```
 niri waybar fuzzel mako kitty swaylock swayidle swayosd brightnessctl
-polkit-gnome xdg-desktop-portal-gnome
+NetworkManager-tui  # nmtui, for WiFi setup
+polkit-gnome  # Fedora: polkit-kde
+xdg-desktop-portal-gnome
 ```
 
 ### Input method
@@ -76,8 +78,8 @@ ImageMagick pavucontrol gnome-keyring
 
 ### Display & cursor
 ```
-xorg-xwayland qt5-qtwayland qt6-qtwayland
-xdg-terminal-exec breeze-cursor-theme
+xorg-xwayland qt5-qtwayland qt6-qtwayland xdg-terminal-exec
+breeze-cursor-theme
 ```
 
 ### Browser
@@ -129,9 +131,11 @@ niri-session
 
 > The original `shorinniri` CLI is **not included** — copy dotfiles directly.
 
+> **Note:** `swayidle` handles idle timeout & pre-sleep lock (lid close / manual suspend). To disable, comment out `spawn-at-startup "~/.config/niri/scripts/swayidle.sh"` in `config.kdl`.
+
 ---
 
-## Keybindings Quick Reference
+## Keybindings
 
 Press **`Mod+Shift+/`** inside Niri for the full help overlay.
 
@@ -156,6 +160,31 @@ Press **`Mod+Shift+/`** inside Niri for the full help overlay.
 | `Mod+F10` | Random wallpaper |
 | `Mod+Alt+V` | Clipboard history |
 | `Mod+F1` | Toggle fcitx5 |
+
+---
+
+## Notes & Known Issues
+
+### Lock Screen
+`swaylock -f -i ~/图片/111046153_p0.jpg` — change the wallpaper path to match yours. If the image doesn't exist, fall back to `swaylock -f -c 1e1e2e` (dark background).
+
+### swayidle not starting?
+- `spawn-at-startup` in niri does **not** expand `~`. Use `spawn-sh-at-startup` for tilde paths, or an absolute path.
+- Auto-start commands only run on **niri startup**, not on config reload. Press `Mod+Shift+E` and re-login.
+- Make sure scripts are executable: `chmod +x ~/.config/niri/scripts/*.sh`
+
+### Clipboard
+Clipboard history is powered by `cliphist` + `wl-paste --watch`. The TUI is replaced by fuzzel for cross-distro compatibility: `cliphist list | fuzzel --dmenu | cliphist decode | wl-copy`. On Arch you can replace this with `cliphist-tui` if preferred.
+
+### Waybar
+Several modules from the original config were removed or simplified: `custom/wfrec` (screen recording removed), `custom/settings` (referred to non-existent `better-control`), `mpris` (not in layout, had typo). The clock `on-click` actions calling GNOME apps (`gnome-clocks`, `gnome-calendar`) were removed for KDE compatibility.
+
+### polkit
+On Fedora, `polkit-gnome` has been removed. Install `polkit-kde` instead: `sudo dnf install polkit-kde`. The config spawns both paths; the non-existent one will silently fail.
+
+### Laptop lid close
+- If you're running niri **inside a Plasma session**, Plasma's powerdevil may still handle lid-close events. The `before-sleep` hook in swayidle will still fire before suspend, but the sleep itself is managed by Plasma.
+- For standalone niri sessions, `systemd-logind` handles lid-close (`HandleLidSwitch=suspend` in `/etc/systemd/logind.conf`).
 
 ---
 

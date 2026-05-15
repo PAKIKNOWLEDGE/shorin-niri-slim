@@ -11,16 +11,16 @@
 | 方面 | 原版 | Slim |
 |------|------|------|
 | **动画** | 弹簧物理（有回弹） | 简单时长 + ease-out |
-| **背景模糊** | 3 次采样 + xray | **已禁用** |
-| **动态配色** | matugen 引擎 | **静态硬编码配色** |
-| **壁纸** | awww（常驻守护） | **waypaper + swaybg** |
-| **锁屏** | hyprlock | **swaylock** — 单一二进制 |
-| **自研扩展** | niri-sidebar, niriusd, linuxqq-clipsync | **已移除** |
-| **自启进程** | 16+ 守护进程 | **仅 8 个核心** |
-| **脚本** | 10+ 自定义脚本 | **保留 4 个** |
-| **Waybar 主题** | 双主题 | **单一默认** |
-| **快捷键** | 含扩展热键 | **干净** — 仅核心操作 |
-| **硬件目标** | 现代桌面 | **低配 / 核显友好** |
+| **背景模糊** | 3 次采样 + xray | 已禁用 |
+| **动态配色** | matugen 引擎 | 静态硬编码配色 |
+| **壁纸** | awww（常驻守护） | waypaper + swaybg |
+| **锁屏** | hyprlock（模糊 + 动画） | swaylock — 单一二进制 |
+| **自研扩展** | niri-sidebar, niriusd, linuxqq-clipsync | 已移除 |
+| **自启进程** | 16+ 守护进程 | 仅 8 个核心 |
+| **脚本** | 10+ 自定义脚本 | 保留 4 个 |
+| **Waybar 主题** | 双主题 | 单一默认 |
+| **快捷键** | 含扩展热键 | 干净 — 仅核心操作 |
+| **硬件目标** | 现代桌面 | 低配 / 核显友好 |
 
 完整的快捷键布局、窗口规则、工作区逻辑和视觉设计**均完整保留**。
 
@@ -31,7 +31,9 @@
 ### 核心
 ```
 niri waybar fuzzel mako kitty swaylock swayidle swayosd brightnessctl
-polkit-gnome xdg-desktop-portal-gnome
+NetworkManager-tui  # nmtui，WiFi 配置工具
+polkit-gnome  # Fedora 请用 polkit-kde
+xdg-desktop-portal-gnome
 ```
 
 ### 输入法
@@ -76,8 +78,8 @@ ImageMagick pavucontrol gnome-keyring
 
 ### 显示 & 光标
 ```
-xorg-xwayland qt5-qtwayland qt6-qtwayland
-xdg-terminal-exec breeze-cursor-theme
+xorg-xwayland qt5-qtwayland qt6-qtwayland xdg-terminal-exec
+breeze-cursor-theme
 ```
 
 ### 浏览器
@@ -129,6 +131,8 @@ niri-session
 
 > 原版 `shorinniri` CLI **本版已移除**，直接复制配置文件即可。
 
+> **注意：** `swayidle` 负责闲置自动锁屏和**休眠前锁屏**（合盖 / 手动休眠）。如需禁用，注释掉 `config.kdl` 中的 `spawn-at-startup "~/.config/niri/scripts/swayidle.sh"` 即可。
+
 ---
 
 ## 快捷键速查
@@ -156,6 +160,31 @@ niri-session
 | `Mod+F10` | 随机壁纸 |
 | `Mod+Alt+V` | 剪贴板历史 |
 | `Mod+F1` | 开关 fcitx5 |
+
+---
+
+## 注意事项
+
+### 锁屏
+`swaylock -f -i ~/图片/111046153_p0.jpg` — 把壁纸路径改成你的。如果图片不存在，会报错。也可以改成纯色背景：`swaylock -f -c 1e1e2e`。
+
+### swayidle 没启动？
+- `spawn-at-startup` 不会展开 `~`，要用 `spawn-sh-at-startup` 或者写绝对路径。
+- 自动启动只在 **niri 启动时**执行，热重载不生效。改完后按 `Mod+Shift+E` 退出重登。
+- 确保脚本可执行：`chmod +x ~/.config/niri/scripts/*.sh`
+
+### 剪贴板
+剪贴板历史由 `cliphist` + `wl-paste --watch` 提供。用 fuzzel 做选择界面以兼容各发行版：`cliphist list | fuzzel --dmenu | cliphist decode | wl-copy`。Arch 用户可以换成 `cliphist-tui`。
+
+### Waybar
+原版中的一些模块已被移除或简化：`custom/wfrec`（录屏功能已移除）、`custom/settings`（调用了不存在的 `better-control`）、`mpris`（未启用且有拼写错误）。时钟的点击动作原本调用 GNOME 应用（`gnome-clocks`、`gnome-calendar`），现已移除以兼容 KDE。
+
+### polkit
+Fedora 已移除 `polkit-gnome`，请装 `polkit-kde`：`sudo dnf install polkit-kde`。配置里两个路径都写了，不存在的那个会静默失败。
+
+### 合盖
+- 如果你是从 **Plasma 会话切到 niri**，Plasma 的 powerdevil 仍可能管理合盖事件。swayidle 的 `before-sleep` 仍然会在休眠前触发。
+- 独立 niri 会话则由 `systemd-logind` 管理合盖（`HandleLidSwitch=suspend`）。
 
 ---
 

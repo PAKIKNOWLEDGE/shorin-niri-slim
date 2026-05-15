@@ -88,8 +88,9 @@ overview {
 // 壁纸 (waypaper 使用 swaybg 后端，无守护进程常驻)
 spawn-sh-at-startup "sleep 1 && waypaper --restore"
 
-// 权限认证
+// 权限认证 (polkit-gnome 或 polkit-kde, 视发行版而定)
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "/usr/lib/polkit-kde/polkit-kde-authentication-agent-1"
 
 // 屏幕分享 Portal
 spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
@@ -109,5 +110,9 @@ spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 // OSD 显示
 spawn-at-startup "swayosd-server"
 
+// 闲置锁屏 + 休眠前自动锁屏
+spawn-sh-at-startup "~/.config/niri/scripts/swayidle.sh"
+
 hotkey-overlay { skip-at-startup; }
 prefer-no-csd
+

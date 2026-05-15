@@ -25,13 +25,11 @@
   "clock": {
     "interval": 60,
     "format": "󰥔 {:%H:%M}",
-    "tooltip-format": "{:%Y/%m/%d %A}\n---\n左键：打开时钟\n右键：打开日历",
-    "max-length": 25,
-    "on-click": "gnome-clocks",
-    "on-click-right": "gnome-calendar",
+    "tooltip": true,
+    "tooltip-format": "{:%Y/%m/%d %A}",
+    "max-length": 25
   },
   "clock#date": {
-    // "interval":
     "format": "󰸗 {:%m-%d}",
     // "timezone":
     // "timezones":
@@ -214,7 +212,7 @@
   //logo+程序启动器
   "custom/applauncher": {
     "tooltip-format": "左键：软件启动菜单\n右键：打开终端",
-    "format": "",
+    "format": "",
     "on-click": "fuzzel",
     "on-click-right":"kitty"
   },
@@ -241,7 +239,7 @@
   "custom/lockscreen": {
     "tooltip-format": "左键：锁屏",
     "format": "",
-    "on-click": "swaylock -f -c 1e1e2e",
+    "on-click": "swaylock -f -i ~/图片/111046153_p0.jpg",
     "on-scroll-up": "true",
     "on-scroll-down": "true"
   },
@@ -429,7 +427,7 @@
   //剪贴板
   "custom/clipboard":{
     "format":"󰅍",
-    "on-click":"kitty --class cliphist-tui -e cliphist-tui",
+    "on-click":"cliphist list | fuzzel --dmenu --prompt 'Clipboard: ' | cliphist decode | wl-copy",
     "on-click-right":"rm -f ~/.cache/cliphist/db",
     "tooltip-format":"左键：打开剪贴板\n右键：清除剪贴板历史"
   },
