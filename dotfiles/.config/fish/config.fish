@@ -20,7 +20,7 @@ end
 # 关闭欢迎语
 set fish_greeting ""
 # 优先加载本地 bin
-set -p PATH ~/.local/bin
+set -p PATH ~/.local/bin ~/.cargo/bin
 
 # starship 提示符
 starship init fish | source

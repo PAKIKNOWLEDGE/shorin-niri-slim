@@ -15,19 +15,15 @@
         // "ext/workspaces",
         "niri/workspaces",
         "custom/right_div#5",
-        //"cffi/niri-taskbar", //需要安装waybar-niri-taskbar-git
+        //"cffi/niri-taskbar",
         "niri/window",
-        //"dwl/window",
-        // "hyprland/window",
         "custom/right_div#6"
     ],
     "modules-center": [
         "custom/left_div#3",
-	// 这个模块是shorinNiri相关的常用命令
-	"custom/actions",
         "custom/screenshot",
-	//"custom/wallpapers",
-	"custom/clipboard",
+        "custom/colorize",
+        "custom/clipboard",
         "custom/left_div#2",
         "idle_inhibitor",
         "power-profiles-daemon",
@@ -38,15 +34,10 @@
         "custom/right_div#11",
         "clock",
         "custom/right_div#2",
-        //"clock#date",
-        //  "mpris",
         "custom/right_div#3"
-        //"custom/right_div#4",
     ],
     "modules-right": [
-        // "group/backlight",
         "custom/left_div#7",
-        "custom/updates",
         "tray",
         "custom/left_div#4",
         "group/ddcutil",

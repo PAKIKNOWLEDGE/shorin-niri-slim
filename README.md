@@ -1,8 +1,8 @@
 # Shorin Niri Slim
 
-> A lightweight, low-resource port of the Shorin Niri desktop configuration.
+> A lightweight, cross-distro port of the Shorin Niri desktop configuration.
 >
-> Shorin Niri 桌面配置的轻量精简版。
+> Shorin Niri 桌面配置的轻量跨发行版精简版。
 
 ---
 

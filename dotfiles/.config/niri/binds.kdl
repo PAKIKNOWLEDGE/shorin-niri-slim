@@ -20,6 +20,7 @@ binds {
     // ============================================
     Mod+Alt+W       hotkey-overlay-title="切换壁纸 Change wallpaper" { spawn "waypaper"; }
     Mod+F10         hotkey-overlay-title="随机切换壁纸 Random wallpaper" { spawn "waypaper" "--random"; }
+    Mod+Ctrl+F10    hotkey-overlay-title="取色刷新配色 Recolor from wallpaper" { spawn "matugen-update"; }
 
     // ============================================
     // Waybar 开关

@@ -151,6 +151,12 @@
     "on-click": "~/.config/waybar/scripts/screenshot.sh",
     "on-click-right": "~/.config/waybar/scripts/power-screenshot.sh"
   },
+  //取色
+  "custom/colorize": {
+    "format": "󰏘",
+    "tooltip-format": "左键：按当前壁纸刷新配色",
+    "on-click": "~/.local/bin/matugen-update"
+  },
   //录屏screenrec
   "custom/wfrec": {
     "format": "󰻃",
@@ -371,19 +377,8 @@
     "format": "󱋱",
     "tooltip": false,
   },
-  //archupdater
-"custom/updates": {
-    "format": "{}{icon}",
-    "return-type": "json",
-    "format-icons": {
-      "has-updates": "",
-      "updated": ""
-    },
-    "exec": "echo '{\"text\":\"\",\"alt\":\"updated\"}'",
-    "restart-interval": 3600,
-    "on-click": "kitty -e dnf5 upgrade",
-    "on-click-right": "kitty --class floating-term -e 'dnf5 check-update; read -p Press-Enter'"
-  },
+  // 更新检测 — 已移除 (发行版专属)
+  // [Removed] Update checker — was distro-specific
   //隐私
   "privacy": {
     "icon-spacing": 10,
@@ -438,11 +433,7 @@
     "on-click":"waypaper",
     "on-click-right":"waypaper --random"
  },
- // 常用命令
- "custom/actions":{
-   "format":"",
-   "tooltip-format":"左键：常用命令",
-   "on-click":"~/.config/waybar/scripts/command-center.sh"
- }
+ // 常用命令 — 已移除 (发行版专属)
+ // [Removed] Command center — was distro-specific
 
 }
